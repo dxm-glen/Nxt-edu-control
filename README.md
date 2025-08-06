@@ -24,6 +24,10 @@ Nxt-edu-control/
 │   ├── .env                        # 환경변수 (민감정보)
 │   └── README.md                   # 상세 사용법
 │
+├── 📂 database-settings/            # 클래식 DB 환경 구축 도구
+│   ├── classic-architecture-db.py  # MySQL/MariaDB 다중 DB 생성기
+│   └── README.md                   # 상세 사용법
+│
 ├── 📂 resourse-delete/              # AWS 리소스 정리 도구
 │   ├── s3-delete.py                # S3 버킷 대량 삭제
 │   └── lambda-delete.py            # Lambda 함수 대량 삭제
@@ -47,6 +51,13 @@ Nxt-edu-control/
 - **PostgreSQL 자동 연결**: RDS 데이터베이스 설정
 - **MCP 서버 통합**: Claude Desktop과 연동
 - **데이터 초기화/정리**: 교육 환경 빠른 리셋
+
+### 🗄️ **클래식 DB 환경 구축** (`database-settings/`)
+
+- **MySQL/MariaDB 다중 DB**: 교육용 개별 데이터베이스 대량 생성
+- **사용자 계정 관리**: DB별 전용 사용자 및 권한 자동 설정
+- **초기 데이터 삽입**: 명언 텍스트 포함 샘플 데이터 자동 생성
+- **대량 처리**: 최대 56개 독립 데이터베이스 환경 구축
 
 ### 🧹 **리소스 정리** (`resourse-delete/`)
 
@@ -107,6 +118,15 @@ EOF
 python3 mcp_data_initializer.py
 ```
 
+#### 클래식 DB 환경 구축 도구 설정
+```bash
+cd ../database-settings/
+pip install boto3 pymysql
+
+# 스크립트 내 DB 연결 정보 수정 후 실행
+python3 classic-architecture-db.py
+```
+
 #### 리소스 정리 도구 사용
 
 ```bash
@@ -147,14 +167,17 @@ python3 lambda-delete.py
 ### 🎓 **교육 과정 시작 시**
 
 1. **IAM 사용자 생성**: `iamuser/` 도구로 수강생 계정 일괄 생성
-2. **MCP 데이터 준비**: `mcp/` 도구로 실습용 데이터베이스 구축
+2. **데이터베이스 환경 구축**: 
+   - **PostgreSQL 환경**: `mcp/` 도구로 Claude Desktop 연동 실습용 DB
+   - **MySQL 환경**: `database-settings/` 도구로 개별 학습자 전용 DB
 3. **계정 정보 배포**: 자동 생성된 마크다운 문서를 수강생에게 전달
 
 ### 📊 **데이터 분석 실습**
 
-1. **MCP 서버 연결**: Claude Desktop과 데이터베이스 연동
+1. **MCP 서버 연결**: Claude Desktop과 PostgreSQL 데이터베이스 연동
 2. **시나리오별 분석**: 5가지 업종별 데이터로 실전 분석 실습
-3. **데이터 리셋**: 필요시 `cleanup-mcp-data.py`로 초기화
+3. **개별 DB 실습**: MySQL 환경에서 개인별 독립적인 SQL 학습
+4. **데이터 리셋**: 필요시 `cleanup-mcp-data.py`로 초기화
 
 ### 🧹 **교육 과정 종료 후**
 
@@ -186,7 +209,9 @@ python3 lambda-delete.py
 ### 데이터 도구
 
 - **MCP (Model Context Protocol)**: Claude Desktop 연동
-- **PostgreSQL**: 관계형 데이터베이스
+- **PostgreSQL**: 관계형 데이터베이스 (MCP 연동)
+- **MySQL/MariaDB**: 클래식 아키텍처 데이터베이스
+- **PyMySQL**: MySQL 데이터베이스 연결
 
 ## 🤝 기여 가이드
 
